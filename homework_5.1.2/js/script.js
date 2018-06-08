@@ -22,6 +22,16 @@ let	money,
 		price,
 		time;
 
+const mainList = {
+	budget: money,
+	shopName: name,
+	shopGoods: [],
+	employers: {},
+	open: false,
+	discount: false,
+	shopItems: []
+};
+
 // Заполняем поля с бюджетом  и названием магазина
 open.addEventListener('click', () => {
 	money = prompt('Ваш бюджет на месяц?', '');
@@ -79,22 +89,28 @@ choose_item.addEventListener('change', () => {
 
 });
 
-const mainList = {
-	budget: money,
-	shopName: name,
-	shopGoods: [],
-	employers: {},
-	open: false,
-	discount: true,
-	shopItems: [],
+// Предоставляем скидку
+function makeDiscount() {
+	price = prompt('Какую сумму предполагаете оставить в нашем магазине?');
 
-	makeDiscount: function makeDiscount() {
-		if (mainList.discount == true) {
-				price = (price / 100) * 80;
-		}
+	if (price > 1000) {
+		mainList.discount = true;
+	} else {
+		mainList.discount = false;
+	}
+
+	if (mainList.discount == true) {
+			price = (price / 100) * 20;
+			discount_value.style.backgroundColor = 'green';
+			alert('Ваша скидка составит: ' + price);
+
+	} else {
+		discount_value.style.backgroundColor = 'red';
+		alert('К сожалению, вам не будет предоставлена скидка')
 	}
 }
 
+// Открываем магазин в зависимости от времени 
 function openShop (time) {
 	time = prompt('Введите время');
 	time_value.innerHTML = time;
@@ -124,8 +140,6 @@ function openShop (time) {
 		open.innerHTML = 'Магазин закрыт';
 	}
 };
-
-openShop(time);
 
 // расчитываем бюджет на день по клику на кнопку
 budget_btn.addEventListener('click', () => {
@@ -158,3 +172,6 @@ for (let i = 0; i < hire_employers_item.length; i++) {
 
 	});
 }
+
+openShop(time);
+makeDiscount();	
