@@ -3,10 +3,16 @@ let open = document.getElementById('open-btn'),
 		budget_value = document.getElementsByClassName('budget-value')[0],
 		goods_value = document.getElementsByClassName('goods-value')[0],
 		items_value = document.getElementsByClassName('items-value')[0],
-		employers_value =document.getElementsByClassName('employers-value')[0],
+		employers_value = document.getElementsByClassName('employers-value')[0],
 		discount_value = document.getElementsByClassName('discount-value')[0],
 		isOpen = document.getElementsByClassName('isopen')[0],
 		isopen_value = document.getElementsByClassName('isopen-value')[0],
+		body = document.getElementsByTagName('body')[0],
+		main_info_closed = document.querySelector('.main-info-closed'),
+		main_info = document.querySelector('.main-info'),
+		main_functions_closed = document.querySelector('.main-functions-closed'),
+		main_functions = document.querySelector('.main-functions'),
+		text = document.querySelector('.text'),
 
 		goods_item = document.getElementsByClassName('goods-item'),
 		goods_btn = document.getElementsByTagName('button')[1],
@@ -16,7 +22,6 @@ let open = document.getElementById('open-btn'),
 		time_value = document.querySelector('.time-value'),
 		count_budget_value = document.querySelector('.count-budget-value'),
 		hire_employers_item = document.querySelectorAll('.hire-employers-item');
-		
 
 let	money,
 		price,
@@ -89,27 +94,6 @@ choose_item.addEventListener('change', () => {
 
 });
 
-// Предоставляем скидку
-function makeDiscount() {
-	price = prompt('Какую сумму предполагаете оставить в нашем магазине?');
-
-	if (price > 1000) {
-		mainList.discount = true;
-	} else {
-		mainList.discount = false;
-	}
-
-	if (mainList.discount == true) {
-			price = (price / 100) * 20;
-			discount_value.style.backgroundColor = 'green';
-			alert('Ваша скидка составит: ' + price);
-
-	} else {
-		discount_value.style.backgroundColor = 'red';
-		alert('К сожалению, вам не будет предоставлена скидка')
-	}
-}
-
 // Открываем магазин в зависимости от времени 
 function openShop (time) {
 	time = prompt('Введите время');
@@ -117,45 +101,71 @@ function openShop (time) {
 	time_value.setAttribute('readonly','readonly');
 
 	if (time < 0) {
-		console.log('Такого просто не может быть');
+		text.innerHTML = 'Такого просто не может быть';
 		mainList.open = false;
 	} else if (time > 8 && time < 20) {
-		console.log('Время работать!');
+		text.innerHTML = 'Время заняться магией!';
 		mainList.open = true;
 	}	else if (time < 24) {
-		console.log('Уже слишком поздно!');
+		text.innerHTML = 'Чародеи тоже должны отдыхать!';
 		mainList.open = false;
 	} else {
-		console.log('В сутках только 24 часа');
+		text.innerHTML = 'Даже у волшебников в сутках только 24 часа';
 		mainList.open = false;
 	}
 
 	if (mainList.open == true) {
-		isopen_value.style.backgroundColor = 'green';
+		isopen_value.style.backgroundColor = '#004f1a';
 
 	} else {
-		isopen_value.style.backgroundColor = 'red';
+		isopen_value.style.backgroundColor = '#730000';
 		open.setAttribute('disabled', 'disabled');
-		open.style.background = 'red';
 		open.innerHTML = 'Магазин закрыт';
+		body.style.background = 'url(./img/night.png) no-repeat center';
+		main_info_closed.style.display = 'block';
+		main_info.style.display = 'none';
+		main_functions_closed.style.display ='block';
+		main_functions.style.display ='none';
 	}
 };
 
-// расчитываем бюджет на день по клику на кнопку
+// расчитываем бюджет на день и дисконт по клику на кнопку
 budget_btn.addEventListener('click', () => {
-	count_budget_value.value = money / 30;
+	count_budget_value.value = Math.floor(money / 30);
+
+	if (count_budget_value.value > 1000) {
+		mainList.discount = true;
+	} else {
+		mainList.discount = false;
+	}
+
+	if (mainList.discount == true) {
+			price = Math.floor((count_budget_value.value / 100) * 20);
+			discount_value.style.backgroundColor = '#004f1a';
+			discount_value.innerHTML = 'Скидка ' + price;
+			discount_value.style.color = '#ffffff';
+
+	} else {
+		discount_value.style.backgroundColor = '#730000';
+		discount_value.innerHTML = 'Скидки нет';
+		discount_value.style.color = '#ffffff';
+	}
 });
 
 count_budget_value.setAttribute('readonly','readonly');
 
 // Вводим имена сотрудников и заполняем ими соответствующее поле по клику на кнопку
 employers_btn.addEventListener('click', () => {
+
+	employers_value.textContent = '';
+
 	for (let i = 0; i < hire_employers_item.length; i++) {
 
 		let name = hire_employers_item[i].value;
 		mainList.employers[i] = name;
 
 		employers_value.textContent += mainList.employers[i] + ', ';
+
 	}
 });
 
@@ -173,5 +183,17 @@ for (let i = 0; i < hire_employers_item.length; i++) {
 	});
 }
 
+// Разрешаем ввод только русских букв
+for (let i = 0; i < hire_employers_item.length; i++) {
+	hire_employers_item[i].addEventListener('keyup', () => {
+		
+		let reg = /[a-z0-9]/ig;
+		
+		if (reg.test(hire_employers_item[i].value) == true) {
+			
+			hire_employers_item[i].value = '';
+		}
+	});
+}
+
 openShop(time);
-makeDiscount();	
