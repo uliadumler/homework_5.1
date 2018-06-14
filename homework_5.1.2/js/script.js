@@ -13,6 +13,7 @@ let open = document.getElementById('open-btn'),
 		main_functions_closed = document.querySelector('.main-functions-closed'),
 		main_functions = document.querySelector('.main-functions'),
 		text = document.querySelector('.text'),
+		picture = document.querySelector('.picture'),
 
 		goods_item = document.getElementsByClassName('goods-item'),
 		goods_btn = document.getElementsByTagName('button')[1],
@@ -96,7 +97,7 @@ choose_item.addEventListener('change', () => {
 
 // Открываем магазин в зависимости от времени 
 function openShop (time) {
-	time = prompt('Введите время');
+	time = prompt('В котором часу вы хотите зайти в наш магазин?');
 	time_value.innerHTML = time;
 	time_value.setAttribute('readonly','readonly');
 
@@ -126,6 +127,7 @@ function openShop (time) {
 		main_info.style.display = 'none';
 		main_functions_closed.style.display ='block';
 		main_functions.style.display ='none';
+		picture.style.display = 'none';
 	}
 };
 
@@ -140,7 +142,7 @@ budget_btn.addEventListener('click', () => {
 	}
 
 	if (mainList.discount == true) {
-			price = Math.floor((count_budget_value.value / 100) * 20);
+			price = Math.floor((count_budget_value.value / 100) * 5);
 			discount_value.style.backgroundColor = '#004f1a';
 			discount_value.innerHTML = 'Скидка ' + price;
 			discount_value.style.color = '#ffffff';
