@@ -144,7 +144,7 @@ budget_btn.addEventListener('click', () => {
 	if (mainList.discount == true) {
 			price = Math.floor((count_budget_value.value / 100) * 5);
 			discount_value.style.backgroundColor = '#004f1a';
-			discount_value.innerHTML = 'Скидка ' + price;
+			discount_value.innerHTML = `Скидка ${price}`;
 			discount_value.style.color = '#ffffff';
 
 	} else {
@@ -166,7 +166,7 @@ employers_btn.addEventListener('click', () => {
 		let name = hire_employers_item[i].value;
 		mainList.employers[i] = name;
 
-		employers_value.textContent += mainList.employers[i] + ', ';
+		employers_value.textContent += `${mainList.employers[i]}, `;
 
 	}
 });
@@ -199,3 +199,34 @@ for (let i = 0; i < hire_employers_item.length; i++) {
 }
 
 openShop(time);
+
+// Вставляем новый div с текстом и стилями, используя класс
+class Options {
+	constructor (height = '400px', width = '400px', color = 'black', fontSize = '20px', textAlign = 'justify') {
+		this.height = height;
+		this.width = width;
+		this.color = color;
+		this.fontSize = fontSize;
+		this.textAlign = textAlign;
+	}
+
+	createElem (newText) {
+		let div = document.createElement('div'),
+				text = document.createTextNode(newText);
+		document.body.appendChild(div);
+		div.appendChild(text);
+		div.style.cssText = `height: ${this.height}; width: ${this.width}; color: ${this.color}; font-size: ${this.fontSize}; text-align: ${this.textAlign};`;
+
+
+	/*	div.style.height = this.height;
+		div.style.width = this.width;
+		div.style.background = this.background;
+		div.style.fontSize = this.fontSize;
+		div.style.textAlign = this.textAlign;*/
+	}
+}
+
+
+const newDiv = new Options('40px', '100%', 'white', '30px', 'center');
+newDiv.createElem('Заходите ещё. Мы всегда вам рады');
+
